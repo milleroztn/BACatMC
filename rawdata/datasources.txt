@@ -1,0 +1,8 @@
+NYC-housing-data.xlsx
+NYC-demographic-other-data.xlsx
+NYC-COVID-data.xlsx
+
+from NYU Furman Center coredata.nyc
+from NYC.gov Environment and Health Data
+from github.com/nychealth
+Coronavirus Disease 2019 (COVID-19) in New York City (NYC), from the NYC Department of Health and Mental Hygiene.
