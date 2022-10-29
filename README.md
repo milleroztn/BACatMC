@@ -11,7 +11,7 @@ and contains variables collected from the NYU Furman Center's [coredata.nyc](htt
 
 Some variables are measured by sub-borough and others are measured by community district. Additionally, some variables are measured over time for several years and others are measured only at one point in time. The [variables_summary.xlsx](https://github.com/milleroztn/BACatMC/blob/main/rawdata/variables_summary.xlsx) file lists all the variables in the three raw files, whether they are measured by sub-borough or community district, whether they have a geography ID (a number that uniquely identifies each sub-borough or community district), and in which years each variable is measured. For those variables that have only a single value over time, I have also indicated which years are reflected by that value (e.g., over which years was a single average calculated). An image of this file is presented here:
 
-![variables_summary.JPG](/BACatMC/rawdata/variables_summary.png)
+![variables_summary.png](/BACatMC/rawdata/variables_summary.png)
 
 The data-cleaning process is broken up into two steps:
 
