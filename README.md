@@ -21,8 +21,3 @@ The data-cleaning process is broken up into two steps:
 
 # Reshape Raw Data
 # Combine Reshaped Data
-
-
-```python
-
-```
