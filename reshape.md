@@ -151,6 +151,9 @@ cd_data = raw.melt(raw.columns[2], raw.columns[3:22], 'year', raw.short_name[0])
 
 
 ```python
+%%capture --no-display  
+# to hide merge warning
+
 for i in range(1,4):
     raw = pd.read_excel('rawdata/NYC-housing-data.xlsx', sheet_name=i)
     sheet = raw.melt(raw.columns[2], raw.columns[3:22], 'year', raw.short_name[0]).dropna()
@@ -162,22 +165,17 @@ sheet = raw.iloc[:,:4].melt(
 cd_data = cd_data.merge(sheet, how='outer')
 ```
 
-    C:\Users\Austin\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\reshape\merge.py:916: FutureWarning: In a future version, the Index constructor will not infer numeric dtypes when passed object-dtype sequences (matching Series behavior)
-      key_col = Index(lvals).where(~mask_left, rvals)
-    
-
-Here I isolate the observations of '% public housing' organized by community district.
+Here I isolate the observations of '% public housing' that organized by community district.
 
 
 ```python
+%%capture --no-display  
+# to hide merge warning
+
 raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=2)
 sheet = raw.melt(raw.columns[1], raw.columns[2:16], 'year', raw.long_name[0]).dropna()
 cd_data = cd_data.merge(sheet, how='outer')
 ```
-
-    C:\Users\Austin\AppData\Local\Programs\Python\Python310\lib\site-packages\pandas\core\reshape\merge.py:916: FutureWarning: In a future version, the Index constructor will not infer numeric dtypes when passed object-dtype sequences (matching Series behavior)
-      key_col = Index(lvals).where(~mask_left, rvals)
-    
 
 Again the first demographic variable doesn't have short name; long name used instead.
 (Note: BK 08 - Crown Heights/Prospect Heights was in 'serious crime' twice. I removed the duplicate row out of the Excel file before starting this process.)
@@ -190,33 +188,21 @@ for i in range(3,7):
     cd_data = cd_data.merge(sheet, how='outer')
 ```
 
-
-
-
-```python
-
-```
+### Repeat one-time-measured data for all years
 
 
 ```python
-
-```
-
-
-```python
-
-```
-
-
-## repeat one-time (no year) data for all years
 cd_data['prox_subway_pct'] = cd_data.groupby('Community District')['prox_subway_pct'].transform(
     lambda g: g.fillna(g.mean()))
 
 cd_data['prox_park_pct'] = cd_data.groupby('Community District')['prox_park_pct'].transform(
     lambda g: g.fillna(g.mean()))
+```
 
-### Add IDs
-# borough is IDed by two letter; change them to the appropriate gid numbers
+### Generate IDs to match with those in "Rosetta Stone"
+
+
+```python
 cd_data[['bid','District Name']] = cd_data['Community District'].str.split(' - ', expand=True)
 cd_data[['br','id']] = cd_data['bid'].str.split(' ', expand=True)
 cdidkey = pd.DataFrame({
@@ -228,28 +214,52 @@ cd_data['gid'] = cd_data['b'].astype(str) + cd_data['id']
 cd_data['gid'] = cd_data.gid.astype(int)
 cd_data.drop(columns=['Community District', 'bid', 'b', 'id'], inplace=True)
 
-# match each Community District gid with the corresponding Sub-borough ID
+```
+
+Borough is IDed by two letters; I needed to change those to the appropriate gid numbers.
+
+
+```python
 cd_data = cd_data.merge(stone.loc[:,['sb','gid']], how='left')
+```
 
-## export
+Each Community District gid is matched with the corresponding Sub-borough IDs using the Rosetta Stone file.
+
+### Export
+
+
+```python
 cd_data.to_csv('data/cd_data.csv', index=False)
+```
 
-### GID variables- already wide; sheets have different numbers of variables
+## Other GID Variables
 
-## begin with crowding, same as from Rosetta stone
+These variables only have a single measurement (time-invariant), but each sheet has a different number of variables to extract.
+
+
+```python
 raw = pd.read_excel('rawdata/NYC-housing-data.xlsx', sheet_name=8)
 gid_data = raw.loc[raw.GeoTypeName == 'Neighborhood (Sub-borough/PUMA)'].iloc[:,[4,6,7]]
-gid_data.rename(columns = {'Number':'crowding_number', 'Percent of Households':'crowding_percent'}, inplace=True)
+gid_data.rename(
+    columns = {'Number':'crowding_number', 'Percent of Households':'crowding_percent'}, inplace=True)
+```
 
-#single variable, remove city- and borough-level observations
+The first sheet is 'crowding'; the same as used to create the Rosetta Stone file.
+
+
+```python
 raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=13)
 sheet = raw.iloc[6:,[4,6]]
 sheet.columns = pd.concat([
     Series(sheet.columns[0]), sheet.columns[[1]].to_series().apply(
         lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
 gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#single variable, no removals
+This sheet has a single variable, but I also need to remove city- and borough-level observations.
+
+
+```python
 for i in [12,14]:
     raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=i)
     sheet = raw.iloc[:,[4,6]]
@@ -257,8 +267,12 @@ for i in [12,14]:
         Series(sheet.columns[0]), sheet.columns[[1]].to_series().apply(
             lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
     gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#2 vars
+These sheets each have a single variable; no removals needed
+
+
+```python
 for i in [11,15]:
     raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=i)
     sheet = raw.loc[raw.GeoTypeName == 'Neighborhood (Sub-borough/PUMA)'].iloc[:,[4,6,7]]
@@ -266,7 +280,12 @@ for i in [11,15]:
         Series(sheet.columns[0]), sheet.columns[[1,2]].to_series().apply(
             lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
     gid_data = gid_data.merge(sheet, how='outer')
-    
+```
+
+These sheets each have two variables, only measured at sub-borough level.
+
+
+```python
 for i in [16,20,21,22]:
     raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=i)
     sheet = raw.iloc[:,[4,6,7]]
@@ -274,24 +293,36 @@ for i in [16,20,21,22]:
         Series(sheet.columns[0]), sheet.columns[[1,2]].to_series().apply(
             lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
     gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#3 vars
+More sheets with only two variables.
+
+
+```python
 raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=23)
 sheet = raw.iloc[:,[4,6,7,8]]
 sheet.columns = pd.concat([
     Series(sheet.columns[0]), sheet.columns[[1,2,3]].to_series().apply(
         lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
 gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#4 vars, remove city- and borough-level observations
+These sheets each have three variables.
+
+
+```python
 raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=18)
 sheet = raw.iloc[6:,[4,6,7,8,9]]
 sheet.columns = pd.concat([
     Series(sheet.columns[0]), sheet.columns[[1,2,3,4]].to_series().apply(
         lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
 gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#6 vars
+Four variables; also need to remove city- and borough-level observations.
+
+
+```python
 for i in [17,19]:
     raw = pd.read_excel('rawdata/NYC-demographic-other-data.xlsx', sheet_name=i)
     sheet = raw.iloc[:,[4,6,7,8,9,10,11]]
@@ -299,9 +330,17 @@ for i in [17,19]:
         Series(sheet.columns[0]), sheet.columns[[1,2,3,4,5,6]].to_series().apply(
             lambda col : raw['Indicator Name'][0]+'_'+col)], ignore_index=True)
     gid_data = gid_data.merge(sheet, how='outer')
+```
 
-#rename gid
+Last two sheets have 6 variables each.
+## Rename gid
+
+
+```python
 gid_data.rename(columns={'Geography ID':'gid'}, inplace=True)
+```
+## Export
 
-## export
-gid_data.to_csv('data/gid_data.csv', index=False)![variables_summary.JPG](attachment:variables_summary.JPG)
+```python
+gid_data.to_csv('data/gid_data.csv', index=False)
+```
