@@ -22,13 +22,4 @@ The data-cleaning process is broken up into two steps:
 # Reshape Raw Data
 [BACatMC- Reshape Raw Data](https://milleroztn.github.io/BACatMC/reshape)
 # Combine Reshaped Data
-
-
-```python
-
-```
-
-
-```python
-
-```
+[BACatMC- Combine Reshaped Data](https://milleroztn.github.io/BACatMC/combine)

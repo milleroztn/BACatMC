@@ -1,3 +1,12 @@
+[back to main](https://milleroztn.github.io/BACatMC/)
+
+-   <a href="#introduction" id="toc-introduction">Introduction</a>
+-   <a href="#import-modules" id="toc-import-modules">Import Modules</a>
+-   <a href="#rosetta-stone" id="toc-rosetta-stone">"Rosetta Stone" matching document</a>
+-   <a href="#variables-measured-at-sub-borough-level" id="toc-variables-measured-at-sub-borough-level">Sub-borough Variables</a>
+-   <a href="#variables-measured-at-community-district-level" id="toc-variables-measured-at-community-district-level">Community District Variables</a>
+-   <a href="#other-gid-variables" id="toc-other-gid-variables">Other GID Variables</a>
+
 # Introduction 
 This script is the first part of a two-stage data-cleaning process that consolidates raw data from multiple Excel files into a single panel dataset. The data contains housing data, demographic data, and covid data for geographic sub-regions of New York City.
 
@@ -137,6 +146,8 @@ Manual fix for all the missing IDs.
 sb_data.to_csv('data/sb_data.csv', index=False)
 ```
 
+The 'sb_data' data frame has 880 rows (55 sub-boroughs by 16 years) and 18 variables.
+
 ## Variables Measured at Community District Level
 
 ### Import and reshape first community district sheet/variable
@@ -231,6 +242,8 @@ Each Community District gid is matched with the corresponding Sub-borough IDs us
 ```python
 cd_data.to_csv('data/cd_data.csv', index=False)
 ```
+
+The 'cd_data' data frame has 1179 rows (59 districts for 20 years, and 58 districts for 19 years; only three variables are available in 2019 and there is no data for these for district 501- North Shore Staten Island) and 15 variables.
 
 ## Other GID Variables
 
@@ -339,8 +352,12 @@ Last two sheets have 6 variables each.
 ```python
 gid_data.rename(columns={'Geography ID':'gid'}, inplace=True)
 ```
+
 ## Export
+
 
 ```python
 gid_data.to_csv('data/gid_data.csv', index=False)
 ```
+
+The 'gid_data' data frame has 114 rows (55 sub-buroughs and 59 community districts) and 37 variables.
