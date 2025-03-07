@@ -1,4 +1,4 @@
-[back to main](https://milleroztn.github.io/BACatMC/)
+[back to main](https://milleroztn.github.io/BACatMC-2021/)
 
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#import-modules" id="toc-import-modules">Import Modules</a>
@@ -13,10 +13,10 @@ This script is the first part of a two-stage data-cleaning process that consolid
 This script reformats each of the variables in the raw data from its various formats into conventional region-year format.
 
 The outputs of this script are:
-- [stone.csv](https://github.com/milleroztn/BACatMC/blob/main/data/stone.csv), which matches each community district with the appropriate sub-borough and provides Geography IDs for each community district and sub-burough region.
-- [SB_data.csv](https://github.com/milleroztn/BACatMC/blob/main/data/SB_data.csv), which contains all variables that are organized by sub-borough region and year.
-- [CD_data.csv](https://github.com/milleroztn/BACatMC/blob/main/data/CD_data.csv), which contains all variables that are organized by community district region and year.
-- [gid_data.csv](https://github.com/milleroztn/BACatMC/blob/main/data/gid_data.csv), which contains all variables that are organized by Geography ID, which are either by sub-borough or by community district.
+- [stone.csv](https://github.com/milleroztn/BACatMC-2021/blob/main/data/stone.csv), which matches each community district with the appropriate sub-borough and provides Geography IDs for each community district and sub-burough region.
+- [SB_data.csv](https://github.com/milleroztn/BACatMC-2021/blob/main/data/SB_data.csv), which contains all variables that are organized by sub-borough region and year.
+- [CD_data.csv](https://github.com/milleroztn/BACatMC-2021/blob/main/data/CD_data.csv), which contains all variables that are organized by community district region and year.
+- [gid_data.csv](https://github.com/milleroztn/BACatMC-2021/blob/main/data/gid_data.csv), which contains all variables that are organized by Geography ID, which are either by sub-borough or by community district.
 
 
 ## Import Modules
