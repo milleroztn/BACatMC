@@ -20,6 +20,6 @@ The data-cleaning process is broken up into two steps:
 2. Combine the datasets for each region into a single dataset. This requires matching up which community districts are in each sub-borough and in some cases combinind data from multiple community districts into a single sub-borough.
 
 # Reshape Raw Data
-[BACatMC- Reshape Raw Data](https://milleroztn.github.io/BACatMC/reshape)
+[BACatMC- Reshape Raw Data](https://milleroztn.github.io/BACatMC-2021/reshape)
 # Combine Reshaped Data
-[BACatMC- Combine Reshaped Data](https://milleroztn.github.io/BACatMC/combine)
+[BACatMC- Combine Reshaped Data](https://milleroztn.github.io/BACatMC-2021/combine)
