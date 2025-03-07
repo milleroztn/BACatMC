@@ -1,4 +1,4 @@
-[back to main](https://milleroztn.github.io/BACatMC/)
+[back to main](https://milleroztn.github.io/BACatMC-2021/)
 
 -   <a href="#introduction" id="toc-introduction">Introduction</a>
 -   <a href="#import-modules" id="toc-import-modules">Import Modules</a>
@@ -10,9 +10,9 @@
 # Introduction
 This script is the second part of a two-stage data-cleaning process that consolidates raw data from multiple Excel files into a single panel dataset. The data contains housing data, demographic data, and covid data for geographic sub-regions of New York City.
 
-This script combines data that has already been reshaped by the script [reshape.py](https://milleroztn.github.io/BACatMC/reshape). Community districts must be combined/aggregated into the corresponding sub-borough.
+This script combines data that has already been reshaped by the script [reshape.py](https://milleroztn.github.io/BACatMC-2021/reshape). Community districts must be combined/aggregated into the corresponding sub-borough.
 
-The output of this script is a single time-series data frame organized by sub-borough, and exported as [bac.csv](https://github.com/milleroztn/BACatMC/blob/main/data/bac.csv).
+The output of this script is a single time-series data frame organized by sub-borough, and exported as [bac.csv](https://github.com/milleroztn/BACatMC-2021/blob/main/data/bac.csv).
 
 # Import Modules
 
